@@ -1,1 +1,0 @@
-DISABLE_FEATURES=ory_keto,ory_kratos,redis,cors

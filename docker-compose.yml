@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: runner
+    environment:
+      ENV: "local"
+      WEB_PORT: ":8000"
+      AUTH_CONFIG_URL: "${AUTH_CONFIG_URL}"
+      AUTH_AUDIENCE: "${AUTH_AUDIENCE}"
+      AUTH_CLAIMS: "given_name,family_name"
+      AUTH_SCOPES: "api"
+      DB_CONNECTION_STRING: "postgres://postgres:${POSTGRES_PASSWORD}@db:5432/goapitemplate?sslmode=disable"
+      ENABLE_SWAGGER: true
+      ALLOWED_ORIGIN: "*"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - backend
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: goapitemplate
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    networks:
+      - backend
+  cache:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/var/lib/redis/data
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD}"
+    networks:
+      - backend
+volumes:
+  data:
+  cache:
+networks:
+  backend:

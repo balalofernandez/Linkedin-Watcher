@@ -1,24 +1,7 @@
-# OS generated files #
-.DS_Store
-.DS_Store?
-
-
-# Temp Folders and files #
-tmp
-sqlite.db
-ci/data/sqlite/*
-ci/data/mysql/*
-ci/data/postgres/*
-
-# Logs #
-*.log
-
-# SENSITVE DATA #
-.gitconfig
+*.exe*
 .env
-service.env
-
-# Binaries "
-service-skeleton
-./service
-./Go-Boilerplate
+coverage
+*.db
+coverage.xml
+profile.cov
+profile.json
