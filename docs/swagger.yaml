@@ -1,0 +1,57 @@
+basePath: /
+definitions:
+  controllers.HealthResponse:
+    properties:
+      service:
+        example: linkedin-watcher
+        type: string
+      status:
+        example: ok
+        type: string
+      timestamp:
+        example: "2024-01-01T00:00:00Z"
+        type: string
+      uptime:
+        example: 1h30m45s
+        type: string
+      version:
+        example: 1.0.0
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: A Go-based application that monitors LinkedIn connections and automates
+    networking actions.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: LinkedIn Watcher API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Returns the health status of the application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.HealthResponse'
+      summary: Health check endpoint
+      tags:
+      - health
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

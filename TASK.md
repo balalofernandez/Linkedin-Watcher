@@ -19,7 +19,7 @@ Build a LinkedIn connection tracking system that monitors your connections' conn
 
 ## Core Features
 
-1. **OAuth2 Authentication** - Google OAuth2 with JWT tokens
+1. **Dual Authentication** - Google OAuth2 and traditional username/password with JWT tokens
 2. **Connection Tracking** - Monitor LinkedIn connections and their connections
 3. **Profile Management** - Store and update LinkedIn profile data
 4. **Company Tracking** - Track employment history and current companies
@@ -33,11 +33,14 @@ Build a LinkedIn connection tracking system that monitors your connections' conn
 #### `users`
 
 - `id` (UUID, PRIMARY KEY)
-- `google_id` (VARCHAR, UNIQUE)
 - `email` (VARCHAR, UNIQUE)
 - `name` (VARCHAR)
-- `access_token` (TEXT, encrypted)
-- `refresh_token` (TEXT, encrypted)
+- `password_hash` (VARCHAR, nullable) - For traditional username/password auth
+- `google_id` (VARCHAR, UNIQUE, nullable) - For OAuth2 (optional)
+- `access_token` (TEXT, nullable, encrypted) - For OAuth2 (optional)
+- `refresh_token` (TEXT, nullable, encrypted) - For OAuth2 (optional)
+- `auth_type` (ENUM: 'password', 'google', 'both')
+- `is_active` (BOOLEAN)
 - `created_at` (TIMESTAMP)
 - `updated_at` (TIMESTAMP)
 
@@ -104,10 +107,14 @@ Build a LinkedIn connection tracking system that monitors your connections' conn
 
 ### Authentication
 
+- `POST /auth/register` - Register with email/password
+- `POST /auth/login` - Login with email/password
 - `POST /auth/google` - Initiate Google OAuth2
 - `POST /auth/callback` - Handle OAuth2 callback
 - `POST /auth/refresh` - Refresh JWT token
 - `POST /auth/logout` - Logout user
+- `POST /auth/change-password` - Change password
+- `POST /auth/link-google` - Link Google account to existing user
 
 ### Profile Management
 

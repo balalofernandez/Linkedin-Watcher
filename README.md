@@ -23,7 +23,7 @@ This system helps you expand your professional network by:
 
 ### Authentication & Security
 
-- **OAuth2** - Google authentication
+- **Dual Authentication** - Google OAuth2 and traditional username/password
 - **JWT** - Token-based authentication
 - **[Secure](https://github.com/unrolled/secure)** - Security middleware
 
@@ -31,7 +31,7 @@ This system helps you expand your professional network by:
 
 - **[Swagger/OpenAPI](https://swagger.io/)** - API documentation (via `swag`)
 - **[Testify](https://github.com/stretchr/testify)** - Testing framework
-- **[Air](https://github.com/cosmtrek/air)** - Live reload for development
+- **[Air](https://github.com/air-verse/air)** - Live reload for development
 - **[Delve](https://github.com/go-delve/delve)** - Go debugger
 - **[Revive](https://github.com/mgechev/revive)** - Go linter
 
@@ -39,7 +39,7 @@ This system helps you expand your professional network by:
 
 ### Core Functionality
 
-- **OAuth2 Google Integration** - Secure authentication with Google
+- **Dual Authentication** - Google OAuth2 and traditional username/password authentication
 - **Connection Tracking** - Monitor your connections and their networks
 - **Profile Management** - Store and update LinkedIn profile data
 - **Company Tracking** - Track employment history and current companies
@@ -88,7 +88,7 @@ users → tracked_connections → linkedin_profiles
 - Go 1.21+
 - PostgreSQL 14+
 - Redis (for asynq)
-- Google Cloud Platform Account (for OAuth2)
+- Google Cloud Platform Account (for OAuth2, optional)
 
 ### Installation
 
@@ -157,6 +157,8 @@ http://localhost:8080/swagger/index.html
 
 - **Authentication**
 
+  - `POST /auth/register` - Register with email/password
+  - `POST /auth/login` - Login with email/password
   - `POST /auth/google` - Google OAuth2 login
   - `POST /auth/refresh` - Refresh JWT token
 
@@ -189,7 +191,11 @@ DB_PASSWORD=password
 # Redis
 REDIS_URL=redis://localhost:6379
 
-# Google OAuth2
+# Authentication
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRY=24h
+
+# Google OAuth2 (optional)
 GOOGLE_CLIENT_ID=your_client_id
 GOOGLE_CLIENT_SECRET=your_client_secret
 GOOGLE_REDIRECT_URL=http://localhost:8080/auth/callback
@@ -227,7 +233,7 @@ go test ./internal/services/...
 
 ## 🔒 Security
 
-- **Token Encryption** - Google OAuth tokens stored encrypted
+- **Token Encryption** - OAuth tokens and password hashes stored securely
 - **Rate Limiting** - API endpoint protection
 - **Input Validation** - All user inputs validated
 - **CORS Protection** - Proper CORS policies

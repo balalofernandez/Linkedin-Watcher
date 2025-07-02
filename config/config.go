@@ -1,7 +1,8 @@
 package config
 
 import (
-	"gin-boilerplate/infra/logger"
+	"linkedin-watcher/infra/logger"
+
 	"github.com/spf13/viper"
 )
 
@@ -19,6 +20,9 @@ func SetupConfig() error {
 		logger.Errorf("Error to reading config file, %s", err)
 		return err
 	}
+
+	// Enable environment variable reading
+	viper.AutomaticEnv()
 
 	err := viper.Unmarshal(&configuration)
 	if err != nil {

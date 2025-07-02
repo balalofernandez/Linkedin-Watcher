@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/spf13/viper"
 )
 
@@ -15,29 +16,18 @@ type DatabaseConfiguration struct {
 	LogMode  bool
 }
 
-func DbConfiguration() (string, string) {
-	masterDBName := viper.GetString("MASTER_DB_NAME")
-	masterDBUser := viper.GetString("MASTER_DB_USER")
-	masterDBPassword := viper.GetString("MASTER_DB_PASSWORD")
-	masterDBHost := viper.GetString("MASTER_DB_HOST")
-	masterDBPort := viper.GetString("MASTER_DB_PORT")
-	masterDBSslMode := viper.GetString("MASTER_SSL_MODE")
+func DbConfiguration() string {
+	dbName := viper.GetString("MASTER_DB_NAME")
+	dbUser := viper.GetString("MASTER_DB_USER")
+	dbPassword := viper.GetString("MASTER_DB_PASSWORD")
+	dbHost := viper.GetString("MASTER_DB_HOST")
+	dbPort := viper.GetString("MASTER_DB_PORT")
+	dbSslMode := viper.GetString("MASTER_SSL_MODE")
 
-	replicaDBName := viper.GetString("REPLICA_DB_NAME")
-	replicaDBUser := viper.GetString("REPLICA_DB_USER")
-	replicaDBPassword := viper.GetString("REPLICA_DB_PASSWORD")
-	replicaDBHost := viper.GetString("REPLICA_DB_HOST")
-	replicaDBPort := viper.GetString("REPLICA_DB_PORT")
-	replicaDBSslMode := viper.GetString("REPLICA_SSL_MODE")
-
-	masterDBDSN := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
-		masterDBHost, masterDBUser, masterDBPassword, masterDBName, masterDBPort, masterDBSslMode,
+	// Use proper PostgreSQL connection string format
+	dbDSN := fmt.Sprintf(
+		"postgresql://%s:%s@%s:%s/%s?sslmode=%s",
+		dbUser, dbPassword, dbHost, dbPort, dbName, dbSslMode,
 	)
-
-	replicaDBDSN := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
-		replicaDBHost, replicaDBUser, replicaDBPassword, replicaDBName, replicaDBPort, replicaDBSslMode,
-	)
-	return masterDBDSN, replicaDBDSN
+	return dbDSN
 }

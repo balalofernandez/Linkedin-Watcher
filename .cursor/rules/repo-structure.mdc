@@ -1,0 +1,28 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Linkedin Watcher Repository Structure
+
+```
+linkedin-watcher/
+├── .cursor/                       # Cursor IDE configuration
+├── config/                        # Configuration management
+├── db/                            # Database layer
+│   └── migrations/                # Database migration files
+├── docs/                          # API documentation
+├── infra/                         # Infrastructure components
+├── internal/                      # Internal application code
+│   ├── controllers/               # HTTP request handlers
+│   ├── middleware/                # HTTP middleware
+│   └── routers/                   # HTTP routing
+├── main.go                        # Application entry point
+├── go.mod                         # Go module dependencies
+├── Dockerfile                     # Production Docker configuration
+├── docker-compose-dev.yml         # Development Docker Compose
+├── docker-compose-prod.yml        # Production Docker Compose
+└── sqlc.yaml                      # SQL code generation configuration
+```
+
+### Important: whenever a folder is created or removed, edit it here.
