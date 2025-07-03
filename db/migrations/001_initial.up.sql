@@ -35,6 +35,7 @@ CREATE TABLE companies (
 CREATE TABLE linkedin_profiles (
   id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   linkedin_url      VARCHAR(500) UNIQUE NOT NULL,
+  linkedin_id       VARCHAR(255),
   name              VARCHAR(255) NOT NULL,
   location          VARCHAR(255),
   current_company_id UUID REFERENCES companies(id),

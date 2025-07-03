@@ -112,13 +112,7 @@ users → tracked_connections → linkedin_profiles
    # Edit .env with your configuration
    ```
 
-4. **Run database migrations**
-
-   ```bash
-   make migrate-up
-   ```
-
-5. **Start the development server**
+4. **Start the development server**
    ```bash
    make dev
    ```
@@ -153,14 +147,53 @@ Once the server is running, access the Swagger documentation at:
 http://localhost:8080/swagger/index.html
 ```
 
-### Key Endpoints
+### Authentication Endpoints
 
-- **Authentication**
+The application implements a comprehensive authentication system with the following endpoints:
 
-  - `POST /auth/register` - Register with email/password
-  - `POST /auth/login` - Login with email/password
-  - `POST /auth/google` - Google OAuth2 login
-  - `POST /auth/refresh` - Refresh JWT token
+#### Public Endpoints
+
+- **`POST /auth/register`** - Register a new user with email and password
+
+  - Requires: `email`, `name`, `password` (min 8 characters)
+  - Returns: JWT access token, refresh token, and user info
+
+- **`POST /auth/login`** - Login with email and password
+
+  - Requires: `email`, `password`
+  - Returns: JWT access token, refresh token, and user info
+
+- **`POST /auth/refresh`** - Refresh access token using refresh token
+
+  - Requires: `refresh_token`
+  - Returns: New JWT access token and refresh token
+
+- **`POST /auth/logout`** - Logout user (client should discard tokens)
+  - No authentication required
+  - Returns: Success message
+
+#### Protected Endpoints
+
+- **`POST /auth/change-password`** - Change user password
+  - Requires: Bearer token, `current_password`, `new_password`
+  - Returns: Success message
+
+#### Authentication Flow
+
+1. **Registration**: User registers with email/password → receives JWT tokens
+2. **Login**: User logs in with credentials → receives JWT tokens
+3. **API Access**: Include `Authorization: Bearer <token>` header for protected endpoints
+4. **Token Refresh**: Use refresh token to get new access token when expired
+5. **Password Change**: Authenticated users can change their password
+
+#### JWT Token Details
+
+- **Access Token**: Valid for 15 minutes
+- **Refresh Token**: Valid for 7 days
+- **Algorithm**: HS256
+- **Claims**: User ID and email
+
+### Other Key Endpoints
 
 - **Connections**
 

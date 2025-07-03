@@ -101,27 +101,27 @@ ORDER BY name;
 
 -- LinkedIn Profiles queries
 -- name: GetLinkedInProfileByID :one
-SELECT id, linkedin_url, name, location, current_company_id, headline, created_at, updated_at
+SELECT id, linkedin_url, linkedin_id, name, location, current_company_id, headline, created_at, updated_at
 FROM linkedin_profiles
 WHERE id = $1;
 
 -- name: GetLinkedInProfileByURL :one
-SELECT id, linkedin_url, name, location, current_company_id, headline, created_at, updated_at
+SELECT id, linkedin_url, linkedin_id, name, location, current_company_id, headline, created_at, updated_at
 FROM linkedin_profiles
 WHERE linkedin_url = $1;
 
 -- name: CreateLinkedInProfile :one
-INSERT INTO linkedin_profiles (linkedin_url, name, location, current_company_id, headline)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO linkedin_profiles (linkedin_url, linkedin_id, name, location, current_company_id, headline)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
 -- name: UpdateLinkedInProfile :exec
 UPDATE linkedin_profiles 
-SET name = $2, location = $3, current_company_id = $4, headline = $5, updated_at = NOW()
+SET linkedin_id = $2, name = $3, location = $4, current_company_id = $5, headline = $6, updated_at = NOW()
 WHERE id = $1;
 
 -- name: ListLinkedInProfiles :many
-SELECT id, linkedin_url, name, location, current_company_id, headline, created_at, updated_at
+SELECT id, linkedin_url, linkedin_id, name, location, current_company_id, headline, created_at, updated_at
 FROM linkedin_profiles
 ORDER BY name;
 

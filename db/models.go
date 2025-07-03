@@ -39,14 +39,15 @@ type ConnectionRelationship struct {
 }
 
 type LinkedinProfile struct {
-	ID               pgtype.UUID
-	LinkedinUrl      string
-	Name             string
-	Location         pgtype.Text
-	CurrentCompanyID pgtype.UUID
-	Headline         pgtype.Text
-	CreatedAt        pgtype.Timestamp
-	UpdatedAt        pgtype.Timestamp
+	ID               pgtype.UUID      `json:"id" db:"id"`
+	LinkedinUrl      pgtype.Text      `json:"linkedin_url" db:"linkedin_url"`
+	LinkedinID       pgtype.Text      `json:"linkedin_id" db:"linkedin_id"`
+	Name             string           `json:"name" db:"name"`
+	Location         pgtype.Text      `json:"location" db:"location"`
+	CurrentCompanyID pgtype.UUID      `json:"current_company_id" db:"current_company_id"`
+	Headline         pgtype.Text      `json:"headline" db:"headline"`
+	CreatedAt        pgtype.Timestamp `json:"created_at" db:"created_at"`
+	UpdatedAt        pgtype.Timestamp `json:"updated_at" db:"updated_at"`
 }
 
 type ProfileCompany struct {

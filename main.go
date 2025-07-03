@@ -18,6 +18,9 @@
 // @name Authorization
 // @description Type "Bearer" followed by a space and JWT token.
 
+// @securityDefinitions.basic BasicAuth
+// @description Use your email and password for basic authentication.
+
 package main
 
 import (
@@ -54,7 +57,6 @@ func initDB(ctx context.Context, connectionString string) (db.Querier, func()) {
 }
 
 func main() {
-
 	//set timezone
 	viper.SetDefault("SERVER_TIMEZONE", "Europe/Madrid")
 	loc, _ := time.LoadLocation(viper.GetString("SERVER_TIMEZONE"))
@@ -69,10 +71,21 @@ func main() {
 	ctx := context.Background()
 	queries, cleanup := initDB(ctx, dbDSN)
 	defer cleanup()
-	_ = queries // TODO: Use queries for database operations
 
-	router := routers.SetupRoute()
+	// Prepare router dependencies
+	var routerDeps *routers.RouterDependencies
+	if queries != nil {
+		if q, ok := queries.(*db.Queries); ok {
+			jwtSecret := viper.GetString("JWT_SECRET")
+
+			routerDeps = &routers.RouterDependencies{
+				Queries:   q,
+				JWTSecret: jwtSecret,
+			}
+		}
+	}
+
+	router := routers.SetupRoute(routerDeps)
 	logger.Infof("Starting server on %s", config.ServerConfig())
 	logger.Fatalf("%v", router.Run(config.ServerConfig()))
-
 }

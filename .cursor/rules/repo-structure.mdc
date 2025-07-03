@@ -1,7 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+description:
+globs:
+alwaysApply: false
 ---
 # Linkedin Watcher Repository Structure
 
@@ -16,7 +16,9 @@ linkedin-watcher/
 ├── internal/                      # Internal application code
 │   ├── controllers/               # HTTP request handlers
 │   ├── middleware/                # HTTP middleware
-│   └── routers/                   # HTTP routing
+│   ├── models/                    # Domain models (API, business logic)
+│   ├── routers/                   # HTTP routing
+│   └── services/                  # Business logic/services
 ├── main.go                        # Application entry point
 ├── go.mod                         # Go module dependencies
 ├── Dockerfile                     # Production Docker configuration

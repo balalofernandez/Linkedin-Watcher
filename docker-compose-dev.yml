@@ -41,6 +41,8 @@ services:
       - postgres_db:postgres_db
     volumes:
       - .:/app
+    env_file:
+      - .env
     restart: always
 
 volumes:

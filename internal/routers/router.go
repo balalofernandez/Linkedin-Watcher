@@ -1,14 +1,21 @@
 package routers
 
 import (
+	"linkedin-watcher/db"
 	"linkedin-watcher/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
-func SetupRoute() *gin.Engine {
+// RouterDependencies holds all the dependencies needed for routing
+type RouterDependencies struct {
+	Queries   *db.Queries
+	JWTSecret string
+}
 
+// SetupRoute creates and configures the main router with proper dependency injection
+func SetupRoute(deps *RouterDependencies) *gin.Engine {
 	environment := viper.GetBool("DEBUG")
 	if environment {
 		gin.SetMode(gin.DebugMode)
@@ -26,7 +33,12 @@ func SetupRoute() *gin.Engine {
 	router.Use(gin.Recovery())                        // Third: Recovery middleware
 	router.Use(middleware.CORSMiddleware())           // Fourth: CORS middleware
 
-	RegisterRoutes(router) //routes register
+	// Only register auth routes if database is available
+	if deps != nil && deps.Queries != nil {
+		RegisterRoutes(router, deps.Queries, deps.JWTSecret)
+	} else {
+		RegisterRoutesWithoutDB(router)
+	}
 
 	return router
 }
